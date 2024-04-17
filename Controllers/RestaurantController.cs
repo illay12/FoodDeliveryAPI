@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FoodDeliveryAPI.DataLayer.Dtos;
 using FoodDeliveryAPI.DataLayer.Entities;
 using FoodDeliveryAPI.DataLayer.ReposInterfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodDeliveryAPI.Controllers
@@ -23,7 +24,7 @@ namespace FoodDeliveryAPI.Controllers
         }
 
         [HttpPost("CreateRestaurant")]
-        public void AddNewRestaurant(RestaurantDto restaurantDto)
+        public void AddNewRestaurant(CreateRestaurantDto restaurantDto)
         {
             _restaurantRepository.AddNewRestaurant(restaurantDto);
         }
@@ -33,6 +34,24 @@ namespace FoodDeliveryAPI.Controllers
         {
             return _restaurantRepository.GetRestaurants();
         }
+
+        [HttpGet("GetRestaurantById/{Id}")]
+        public IActionResult GetRestaurantById(int Id)
+        {
+            var restaurant = _restaurantRepository.GetRestaurantById(Id);
+            if(restaurant != null)
+            {
+                return Ok(restaurant);
+            }
+            return NotFound("Restaurant was not found");
+        }
+
+        [HttpDelete("RemoveRestaurant{Id}")]
+        public void RemoveRestaurant(int Id)
+        {
+             _restaurantRepository.RemoveRestaurant(Id);
+        }
+
 
         [HttpPost("AddMenuItemToRestaurant")]
         public void AddNewMenuItem(MenuItemDto menuItemDto)

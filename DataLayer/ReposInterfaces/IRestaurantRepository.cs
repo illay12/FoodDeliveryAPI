@@ -11,10 +11,9 @@ namespace FoodDeliveryAPI.DataLayer.ReposInterfaces
     public interface IRestaurantRepository
     {
         IEnumerable<RestaurantDto> GetRestaurants();
-        Restaurant GetRestaurantById(int restaurantId);
-        void AddNewRestaurant(RestaurantDto restaurant);
+        RestaurantDto GetRestaurantById(int restaurantId);
+        void AddNewRestaurant(CreateRestaurantDto restaurant);
         void UpdateRestaurant(int updatedRestaurantId,RestaurantDto restaurant);
-        void RemoveRestaurant(int restaurantId);
-        void Save(); 
+        void RemoveRestaurant(int restaurantId); 
     }
 }

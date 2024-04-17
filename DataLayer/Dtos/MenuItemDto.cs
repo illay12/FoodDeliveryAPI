@@ -7,6 +7,7 @@ namespace FoodDeliveryAPI.DataLayer.Dtos
 {
     public class MenuItemDto
     {
+    public int RestaurantId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }

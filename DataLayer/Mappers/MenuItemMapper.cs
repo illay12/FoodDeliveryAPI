@@ -13,6 +13,7 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
         {
             return new MenuItemDto
             {
+                RestaurantId = menuItem.RestaurantId,
                 Name = menuItem.Name,
                 Description = menuItem.Description,
                 Price = menuItem.Price,
@@ -24,6 +25,7 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
         {
             return new MenuItem
             {
+                RestaurantId = menuItemDto.RestaurantId,
                 Name = menuItemDto.Name,
                 Description = menuItemDto.Description,
                 Price = menuItemDto.Price,
@@ -35,11 +37,12 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
         public static ICollection<MenuItemDto> toMenuItemDtos (this ICollection<MenuItem> menuItems)
         {
             ICollection<MenuItemDto> list = new List<MenuItemDto>();
-            foreach (MenuItem item in menuItems)
-            {
-                list.Add(item.ToMenuItemDto());
+            if(menuItems != null){
+                foreach (MenuItem item in menuItems)
+                {
+                    list.Add(item.ToMenuItemDto());
+                }
             }
-
             return list;
         }
 

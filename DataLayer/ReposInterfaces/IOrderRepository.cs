@@ -13,7 +13,6 @@ namespace FoodDeliveryAPI.DataLayer.ReposInterfaces
         Order GetOrderById(int OrderId);
         void AddNewOrder(OrderDto order);
         void UpdateOrder(OrderDto order);
-        void RemoveOrder(int OrderId);
-        void Save(); 
+        void RemoveOrder(int OrderId); 
     }
 }

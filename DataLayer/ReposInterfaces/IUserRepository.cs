@@ -14,6 +14,5 @@ namespace FoodDeliveryAPI.DataLayer.ReposInterfaces
         void AddNewUser(UserDto userToAdd);
         void UpdateUser(UserDto userToUpdate);
         void RemoveUser(int userId);
-        void Save(); 
     }
 }

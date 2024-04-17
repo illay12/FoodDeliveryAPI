@@ -14,6 +14,5 @@ namespace FoodDeliveryAPI.DataLayer.ReposInterfaces
         void AddNewMenuItem(MenuItemDto menuItem);
         void UpdateMenuItem(MenuItemDto menuItem);
         void RemoveMenuItem(int MenuItemId);
-        void Save(); 
     }
 }
