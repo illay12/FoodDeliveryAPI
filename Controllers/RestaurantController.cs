@@ -24,37 +24,37 @@ namespace FoodDeliveryAPI.Controllers
         }
 
         [HttpPost("CreateRestaurant")]
-        public IActionResult AddNewRestaurant(CreateUpdateRestaurantDto restaurantDto)
+        public async Task<ActionResult<bool>> AddNewRestaurant(CreateUpdateRestaurantDto restaurantDto)
         {
-            return _restaurantRepository.AddNewRestaurant(restaurantDto);
+            return await _restaurantRepository.AddNewRestaurant(restaurantDto);
         }
         [HttpPut("UpdateRestaurant/{restaurantId}")]
-        public IActionResult UpdateRestaurant(int restaurantId, CreateUpdateRestaurantDto restaurantDto)
+        public async Task<ActionResult<bool>> UpdateRestaurant(int restaurantId, CreateUpdateRestaurantDto restaurantDto)
         {
-            return _restaurantRepository.UpdateRestaurant(restaurantId,restaurantDto);
+            return await _restaurantRepository.UpdateRestaurant(restaurantId,restaurantDto);
         }
 
         [HttpGet("GetRestaurants")]
-        public IEnumerable<RestaurantDto> GetRestaurants()
+        public async Task<IEnumerable<RestaurantDto>> GetRestaurants()
         {
-            return _restaurantRepository.GetRestaurants();
+            return await _restaurantRepository.GetRestaurants();
         }
 
         [HttpGet("GetRestaurantById/{Id}")]
-        public IActionResult GetRestaurantById(int Id)
+        public async Task<ActionResult<RestaurantDto>> GetRestaurantById(int Id)
         {
-            var restaurant = _restaurantRepository.GetRestaurantById(Id);
+            var restaurant = await _restaurantRepository.GetRestaurantById(Id);
             if(restaurant != null)
             {
-                return Ok(restaurant);
+                return restaurant;
             }
-            return NotFound("Restaurant not found!");
+            return NotFound();
         }
 
         [HttpDelete("RemoveRestaurant/{Id}")]
-        public IActionResult RemoveRestaurant(int Id)
+        public async Task<ActionResult<bool>> RemoveRestaurant(int Id)
         {
-            return _restaurantRepository.RemoveRestaurant(Id);
+            return await _restaurantRepository.RemoveRestaurant(Id);
         }
 
 

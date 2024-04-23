@@ -10,10 +10,10 @@ namespace FoodDeliveryAPI.DataLayer.ReposInterfaces
 {
     public interface IRestaurantRepository
     {
-        IEnumerable<RestaurantDto> GetRestaurants();
-        RestaurantDto GetRestaurantById(int restaurantId);
-        IActionResult AddNewRestaurant(CreateUpdateRestaurantDto restaurant);
-        IActionResult UpdateRestaurant(int updatedRestaurantId,CreateUpdateRestaurantDto restaurant);
-        IActionResult RemoveRestaurant(int restaurantId); 
+        Task<IEnumerable<RestaurantDto>> GetRestaurants();
+        Task<RestaurantDto> GetRestaurantById(int restaurantId);
+        Task<bool> AddNewRestaurant(CreateUpdateRestaurantDto restaurant);
+        Task<bool> UpdateRestaurant(int updatedRestaurantId,CreateUpdateRestaurantDto restaurant);
+        Task<bool> RemoveRestaurant(int restaurantId); 
     }
 }

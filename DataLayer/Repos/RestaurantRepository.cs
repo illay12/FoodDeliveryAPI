@@ -22,25 +22,24 @@ namespace FoodDeliveryAPI.DataLayer.Repos
             _context = dbContext;
         }
 
-        public IActionResult AddNewRestaurant(CreateUpdateRestaurantDto restaurntToAdd)
+        public async Task<bool> AddNewRestaurant(CreateUpdateRestaurantDto restaurntToAdd)
         {
             try
             {
-            _context.Restaurants.Add(restaurntToAdd.ToRestaurant());
-            _context.SaveChanges();
-            return new OkResult();
+                _context.Restaurants.Add(restaurntToAdd.ToRestaurant());
+                await _context.SaveChangesAsync();
+                return true;
             }
-            catch(Exception ex)
-            {
-                throw new Exception("Something didn't work while trying to add the resaturant!");
+            catch (Exception ex){
+                return false;
             }
         }
 
-        public RestaurantDto GetRestaurantById(int restaurantId)
+        public async Task<RestaurantDto> GetRestaurantById(int restaurantId)
         {
-            var res = _context.Restaurants
+            var res = await _context.Restaurants
             .Include(r => r.MenuItems)
-            .FirstOrDefault(r => r.RestaurantId == restaurantId);
+            .FirstOrDefaultAsync(r => r.RestaurantId == restaurantId);
             if(res != null)
             return new RestaurantDto {
                 Name = res.Name,
@@ -50,15 +49,15 @@ namespace FoodDeliveryAPI.DataLayer.Repos
                 OpeningHours = res.OpeningHours,
                 DeliveryFee = res.DeliveryFee,
                 MenuItems = res.MenuItems.toMenuItemDtos()
-
             };
+
             return null;
 
         }
 
-        public IEnumerable<RestaurantDto> GetRestaurants()
+        public async Task<IEnumerable<RestaurantDto>> GetRestaurants()
         {
-            return _context.Restaurants
+            return await _context.Restaurants
                 .Select(r => new RestaurantDto
                 {
                     Name = r.Name,
@@ -69,37 +68,38 @@ namespace FoodDeliveryAPI.DataLayer.Repos
                     DeliveryFee = r.DeliveryFee,
                     MenuItems = r.MenuItems.ToList().toMenuItemDtos(),
                 })
-                .ToList();
+                .ToListAsync();
         }
 
-        public IActionResult RemoveRestaurant(int restaurantId)
+        public async Task<bool> RemoveRestaurant(int restaurantId)
         {
             var checkResExists = _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
             if (checkResExists != null)
             {
-                var restaurantToRemove = _context.Restaurants
+                var restaurantToRemove = await _context.Restaurants
                 .Include(r => r.MenuItems)
-                .FirstOrDefault(r => r.RestaurantId == restaurantId);
+                .FirstOrDefaultAsync(r => r.RestaurantId == restaurantId);
                 _context.Restaurants.Remove(restaurantToRemove);
-                _context.SaveChanges();
-                return new OkResult();
+                await _context.SaveChangesAsync();
+                return true;
             }
-            return new NotFoundResult();
+            
+            return false;
             
         }
 
-        public IActionResult UpdateRestaurant(int restaurantId,CreateUpdateRestaurantDto restaurantDto)
+        public async Task<bool> UpdateRestaurant(int restaurantId,CreateUpdateRestaurantDto restaurantDto)
         {
             var restaurantToUpdate = _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
             if(restaurantToUpdate != null)
             {
                 RestaurantMapper.Map(restaurantToUpdate,restaurantDto);
                 _context.Update(restaurantToUpdate);
-                _context.SaveChanges();
-                return new OkResult();
+                await _context.SaveChangesAsync();
+                return true;
             }
 
-            return new NotFoundResult();
+            return false;
         }
     }
 }
