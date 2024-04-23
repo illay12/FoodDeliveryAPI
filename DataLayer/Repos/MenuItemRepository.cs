@@ -6,6 +6,7 @@ using FoodDeliveryAPI.DataLayer.Dtos;
 using FoodDeliveryAPI.DataLayer.Entities;
 using FoodDeliveryAPI.DataLayer.Mappers;
 using FoodDeliveryAPI.DataLayer.ReposInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodDeliveryAPI.DataLayer.Repos
 {
@@ -17,15 +18,27 @@ namespace FoodDeliveryAPI.DataLayer.Repos
             _context = dbContext;
         }
         
-        public void AddNewMenuItem(MenuItemDto menuItemDto)
+        public async Task<bool> AddNewMenuItem(MenuItemDto menuItemDto)
         {
-            _context.MenuItems.Add(menuItemDto.ToMenuItem());
-            _context.SaveChanges();
+            try{   
+                _context.MenuItems.Add(menuItemDto.ToMenuItem());
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception ex){
+                return false;
+            }
         }
 
-        public MenuItem GetMenuItemById(int menuItemId)
+        public async Task<MenuItemDto> GetMenuItemById(int menuItemId)
         {
-            throw new NotImplementedException();
+            var menuItem =  await _context.MenuItems.FirstOrDefaultAsync(m => m.Id == menuItemId);
+            if (menuItem != null)
+            {
+                return menuItem.ToMenuItemDto();
+            }
+
+            return null;
         }
 
         public IEnumerable<MenuItem> GetMenuItems()
@@ -33,25 +46,32 @@ namespace FoodDeliveryAPI.DataLayer.Repos
             throw new NotImplementedException();
         }
 
-        public void RemoveMenuItem(int menuItemId)
+        public async Task<bool> RemoveMenuItem(int menuItemId)
         {
             var menuItemToRemove = _context.MenuItems.FirstOrDefault(m => m.Id == menuItemId);
             if(menuItemToRemove != null)
             {
                 _context.MenuItems.Remove(menuItemToRemove);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
+                return true;
             }
 
+            return false;
+
         }
 
-        public void Save()
+        public async Task<bool> UpdateMenuItem(int menuItemId, MenuItemUpdatedDto menuItemDto)
         {
-            throw new NotImplementedException();
-        }
+            var menuItemToUpdate = _context.MenuItems.FirstOrDefault(m => m.Id == menuItemId);
+            if(menuItemToUpdate != null)
+            {
+                MenuItemMapper.Map(menuItemToUpdate, menuItemDto);
+                _context.Update(menuItemToUpdate);
+                await _context.SaveChangesAsync();
+                return true;
+            }
 
-        public void UpdateMenuItem(MenuItemDto menuItem)
-        {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

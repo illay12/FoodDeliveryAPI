@@ -10,9 +10,9 @@ namespace FoodDeliveryAPI.DataLayer.ReposInterfaces
     public interface IMenuItemRepository
     {
         IEnumerable<MenuItem> GetMenuItems();
-        MenuItem GetMenuItemById(int MenuItemId);
-        void AddNewMenuItem(MenuItemDto menuItem);
-        void UpdateMenuItem(MenuItemDto menuItem);
-        void RemoveMenuItem(int MenuItemId);
+        Task<MenuItemDto> GetMenuItemById(int MenuItemId);
+        Task<bool> AddNewMenuItem(MenuItemDto menuItem);
+        Task<bool> UpdateMenuItem(int menutItemId, MenuItemUpdatedDto menuItemToUpdate);
+        Task<bool> RemoveMenuItem(int MenuItemId);
     }
 }

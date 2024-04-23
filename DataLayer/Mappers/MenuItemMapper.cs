@@ -56,5 +56,13 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
 
             return list;
         }
+
+        public static void Map(MenuItem menuItem, MenuItemUpdatedDto menuItemDto)
+        {
+                menuItem.Name = menuItemDto.Name;
+                menuItem.Description = menuItemDto.Description;
+                menuItem.Price = menuItemDto.Price;
+                menuItem.Category = menuItemDto.Category;
+        }
     }
 }

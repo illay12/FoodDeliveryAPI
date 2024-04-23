@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FoodDeliveryAPI.DataLayer.Dtos;
 using FoodDeliveryAPI.DataLayer.Entities;
+using FoodDeliveryAPI.DataLayer.Repos;
 using FoodDeliveryAPI.DataLayer.ReposInterfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -54,20 +55,51 @@ namespace FoodDeliveryAPI.Controllers
         [HttpDelete("RemoveRestaurant/{Id}")]
         public async Task<ActionResult<bool>> RemoveRestaurant(int Id)
         {
-            return await _restaurantRepository.RemoveRestaurant(Id);
+            var restaurantRemoved =  await _restaurantRepository.RemoveRestaurant(Id);
+            if (restaurantRemoved)
+            {
+                return Ok("Restaurantul a fost sters!");
+            }
+
+            return NotFound("Restaurantul nu a fost gasit!");
         }
 
 
         [HttpPost("AddMenuItemToRestaurant")]
-        public void AddNewMenuItem(MenuItemDto menuItemDto)
+        public async Task<ActionResult<bool>> AddNewMenuItem(MenuItemDto menuItemDto)
         {
-            _menuItemRepository.AddNewMenuItem(menuItemDto);
+            return await _menuItemRepository.AddNewMenuItem(menuItemDto);
         }
 
         [HttpDelete("RemoveMenuItem/{menuItemId}")]
-        public void RemoveMenuItem(int menuItemId)
+        public async Task<ActionResult<bool>> RemoveMenuItem(int menuItemId)
         {
-            _menuItemRepository.RemoveMenuItem(menuItemId);
+            var menuItemRemoved =  await _menuItemRepository.RemoveMenuItem(menuItemId);
+            if (menuItemRemoved)
+            {
+                return Ok("Stergerea s-a realizat cu succes!");
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet("GetMenuItem/{Id}")]
+        public async Task<ActionResult<MenuItemDto>> GetMenuItemById(int Id)
+        {
+            var menuItem = await _menuItemRepository.GetMenuItemById(Id);
+            return menuItem != null ? menuItem : NotFound();
+        }
+
+        [HttpPut("UpdateMenuItem/{menuItemId}")]
+        public async Task<ActionResult<bool>> UpdateMenuItem(int menuItemId, MenuItemUpdatedDto menuItemDto)
+        {
+            var menuItemUpdated =  await _menuItemRepository.UpdateMenuItem(menuItemId,menuItemDto);
+            if (menuItemUpdated)
+            {
+                return Ok("Updated succesufully!");
+            }
+
+            return NotFound();
         }
 
     }
