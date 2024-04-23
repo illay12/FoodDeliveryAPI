@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FoodDeliveryAPI.DataLayer.Dtos
 {
-    public class CreateRestaurantDto
+    public class CreateUpdateRestaurantDto
     {
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";

@@ -10,7 +10,7 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
     public static class RestaurantMapper
     {
 
-        public static Restaurant ToRestaurant(this CreateRestaurantDto resDto)
+        public static Restaurant ToRestaurant(this CreateUpdateRestaurantDto resDto)
         {
             return new Restaurant
             {
@@ -48,6 +48,16 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
                 DeliveryFee = restaurantDto.DeliveryFee,
                 MenuItems = restaurantDto.MenuItems.toMenuItems()
             };
+        }
+
+        public static void Map(Restaurant restaurant,CreateUpdateRestaurantDto restaurantDto)
+        {
+            restaurant.Name = restaurantDto.Name;
+            restaurant.Description = restaurantDto.Description;
+            restaurant.Address = restaurantDto.Address;
+            restaurant.PhoneNumber = restaurantDto.PhoneNumber;
+            restaurant.OpeningHours = restaurantDto.OpeningHours;
+            restaurant.DeliveryFee = restaurantDto.DeliveryFee;
         }
     }
 }

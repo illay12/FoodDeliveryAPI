@@ -23,7 +23,7 @@ namespace FoodDeliveryAPI.DataLayer.Repos
             _context.SaveChanges();
         }
 
-        public MenuItem GetMenuItemById(int MenuItemId)
+        public MenuItem GetMenuItemById(int menuItemId)
         {
             throw new NotImplementedException();
         }
@@ -33,9 +33,15 @@ namespace FoodDeliveryAPI.DataLayer.Repos
             throw new NotImplementedException();
         }
 
-        public void RemoveMenuItem(int MenuItemId)
+        public void RemoveMenuItem(int menuItemId)
         {
-            throw new NotImplementedException();
+            var menuItemToRemove = _context.MenuItems.FirstOrDefault(m => m.Id == menuItemId);
+            if(menuItemToRemove != null)
+            {
+                _context.MenuItems.Remove(menuItemToRemove);
+                _context.SaveChanges();
+            }
+
         }
 
         public void Save()

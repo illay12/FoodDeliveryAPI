@@ -24,9 +24,14 @@ namespace FoodDeliveryAPI.Controllers
         }
 
         [HttpPost("CreateRestaurant")]
-        public void AddNewRestaurant(CreateRestaurantDto restaurantDto)
+        public IActionResult AddNewRestaurant(CreateUpdateRestaurantDto restaurantDto)
         {
-            _restaurantRepository.AddNewRestaurant(restaurantDto);
+            return _restaurantRepository.AddNewRestaurant(restaurantDto);
+        }
+        [HttpPut("UpdateRestaurant/{restaurantId}")]
+        public IActionResult UpdateRestaurant(int restaurantId, CreateUpdateRestaurantDto restaurantDto)
+        {
+            return _restaurantRepository.UpdateRestaurant(restaurantId,restaurantDto);
         }
 
         [HttpGet("GetRestaurants")]
@@ -43,13 +48,13 @@ namespace FoodDeliveryAPI.Controllers
             {
                 return Ok(restaurant);
             }
-            return NotFound("Restaurant was not found");
+            return NotFound("Restaurant not found!");
         }
 
-        [HttpDelete("RemoveRestaurant{Id}")]
-        public void RemoveRestaurant(int Id)
+        [HttpDelete("RemoveRestaurant/{Id}")]
+        public IActionResult RemoveRestaurant(int Id)
         {
-             _restaurantRepository.RemoveRestaurant(Id);
+            return _restaurantRepository.RemoveRestaurant(Id);
         }
 
 
@@ -58,5 +63,12 @@ namespace FoodDeliveryAPI.Controllers
         {
             _menuItemRepository.AddNewMenuItem(menuItemDto);
         }
+
+        [HttpDelete("RemoveMenuItem/{menuItemId}")]
+        public void RemoveMenuItem(int menuItemId)
+        {
+            _menuItemRepository.RemoveMenuItem(menuItemId);
+        }
+
     }
 }

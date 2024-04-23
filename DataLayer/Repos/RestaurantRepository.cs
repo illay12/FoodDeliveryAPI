@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using FoodDeliveryAPI.DataLayer.Dtos;
 using FoodDeliveryAPI.DataLayer.Entities;
 using FoodDeliveryAPI.DataLayer.Mappers;
 using FoodDeliveryAPI.DataLayer.ReposInterfaces;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +22,18 @@ namespace FoodDeliveryAPI.DataLayer.Repos
             _context = dbContext;
         }
 
-        public void AddNewRestaurant(CreateRestaurantDto restaurntToAdd)
+        public IActionResult AddNewRestaurant(CreateUpdateRestaurantDto restaurntToAdd)
         {
+            try
+            {
             _context.Restaurants.Add(restaurntToAdd.ToRestaurant());
             _context.SaveChanges();
+            return new OkResult();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Something didn't work while trying to add the resaturant!");
+            }
         }
 
         public RestaurantDto GetRestaurantById(int restaurantId)
@@ -42,7 +52,8 @@ namespace FoodDeliveryAPI.DataLayer.Repos
                 MenuItems = res.MenuItems.toMenuItemDtos()
 
             };
-            throw new Exception("Restaurant not found!");
+            return null;
+
         }
 
         public IEnumerable<RestaurantDto> GetRestaurants()
@@ -61,21 +72,34 @@ namespace FoodDeliveryAPI.DataLayer.Repos
                 .ToList();
         }
 
-        public void RemoveRestaurant(int restaurantId)
+        public IActionResult RemoveRestaurant(int restaurantId)
         {
-            var restaurantToRemove = _context.Restaurants
-            .Include(r => r.MenuItems)
-            .FirstOrDefault(r => r.RestaurantId == restaurantId);
-            if (restaurantToRemove != null)
+            var checkResExists = _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
+            if (checkResExists != null)
             {
+                var restaurantToRemove = _context.Restaurants
+                .Include(r => r.MenuItems)
+                .FirstOrDefault(r => r.RestaurantId == restaurantId);
                 _context.Restaurants.Remove(restaurantToRemove);
                 _context.SaveChanges();
+                return new OkResult();
             }
+            return new NotFoundResult();
+            
         }
 
-        public void UpdateRestaurant(int updatedRestaurantId,RestaurantDto restaurant)
+        public IActionResult UpdateRestaurant(int restaurantId,CreateUpdateRestaurantDto restaurantDto)
         {
-            throw new NotImplementedException();
+            var restaurantToUpdate = _context.Restaurants.FirstOrDefault(r => r.RestaurantId == restaurantId);
+            if(restaurantToUpdate != null)
+            {
+                RestaurantMapper.Map(restaurantToUpdate,restaurantDto);
+                _context.Update(restaurantToUpdate);
+                _context.SaveChanges();
+                return new OkResult();
+            }
+
+            return new NotFoundResult();
         }
     }
 }
