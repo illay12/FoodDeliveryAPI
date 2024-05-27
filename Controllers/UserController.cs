@@ -21,16 +21,5 @@ namespace FoodDeliveryAPI.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpPost("CreateUser")]
-        public void AddNewRestaurant(UserDto userDto)
-        {
-            _userRepository.AddNewUser(userDto);
-        }
-
-        [HttpGet("GetUsers")]
-        public IEnumerable<User> GetUsers()
-        {
-            return _userRepository.GetUsers();
-        }
     }
 }

@@ -10,28 +10,36 @@ namespace FoodDeliveryAPI.DataLayer.Mappers
 {
     public static class UserMapper
     {
-        public static UserDto ToUserDto(this User user)
-        {
-            return new UserDto
-            {
-                Username = user.Username,
-                Email = user.Email,
-                Password = user.Password,
-                City = user.City,
-            };
-        }
+        // public static UserDto ToUserDto(this User user)
+        // {
+        //     return new UserDto
+        //     {
+        //         Username = user.Username,
+        //         Email = user.Email,
+        //         City = user.City,
+        //     };
+        // }
 
-        public static User ToUser(this UserDto userDto)
-        {
-            var passwordHasher = new PasswordHasher<string>();
+        // public static User ToUser(this UserDto userDto)
+        // {
+        //     var passwordHasher = new PasswordHasher<string>();
 
+        //     return new User
+        //     {
+        //         Username = userDto.Username,
+        //         Email = userDto.Email,
+        //         City = userDto.City,
+        //     };
+       // }
+
+       public static User ToUser(this UserForRegisterDto userDto)
+       {
             return new User
             {
                 Username = userDto.Username,
                 Email = userDto.Email,
-                Password = passwordHasher.HashPassword(userDto.Username,userDto.Password),
-                City = userDto.City,
+                City = userDto.City
             };
-        }
+       }
     }
 }

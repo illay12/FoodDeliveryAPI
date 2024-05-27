@@ -74,3 +74,4 @@ C:\Proiecte\FoodDeliveryAPI\obj\Debug\net7.0\refint\FoodDeliveryAPI.dll
 C:\Proiecte\FoodDeliveryAPI\obj\Debug\net7.0\FoodDeliveryAPI.pdb
 C:\Proiecte\FoodDeliveryAPI\obj\Debug\net7.0\FoodDeliveryAPI.genruntimeconfig.cache
 C:\Proiecte\FoodDeliveryAPI\obj\Debug\net7.0\ref\FoodDeliveryAPI.dll
+C:\Proiecte\FoodDeliveryAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
